@@ -1,0 +1,36 @@
+{
+  "name": "scrapping",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "PriceOye Mobiles",
+  "main": "index.js",
+  "scripts": {
+    "priceoye": "nodemon ./src/priceoye/PriceoyeCards.js",
+    "whatmobile": "nodemon ./src/whatmobile/whatmobile.js",
+    "server": "node ./src/api/server.js",
+    "filter": "nodemon ./src/centrulDb/filter.js",
+    "n-priceoye": "nodemon ./src/priceoye/PriceoyeCards.js",
+    "n-whatmobile": "nodemon ./src/whatmobile/whatmobile.js",
+    "n-server": "nodemon ./src/api/server.js",
+    "n-filter": "nodemon ./src/centrulDb/filter.js",
+    "n-test": "nodemon ./src/test/test.js",
+    "dev": "npm run server"
+  },
+  "author": "LEGEND",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.1.3",
+    "concurrently": "^7.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "image-to-base64": "^2.2.0",
+    "jsdom": "^20.0.1",
+    "mongodb": "^4.12.1",
+    "mongoose": "^6.7.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
