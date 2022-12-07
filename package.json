@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "PriceOye Mobiles",
-  "main": "./src/Api/server.js",
+  "main": "index.js",
   "scripts": {
     "priceoye": "nodemon ./src/priceoye/PriceoyeCards.js",
     "whatmobile": "nodemon ./src/whatmobile/whatmobile.js",

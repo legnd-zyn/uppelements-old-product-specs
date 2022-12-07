@@ -5,7 +5,7 @@ import cors from "cors";
 const app = express();
 const corsOptions = {
   origin: "*",
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
 app.use(json());
@@ -20,7 +20,7 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
-app.use("/mobiles", mobiles);
+app.use("/api/mobiles", mobiles);
 
 app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 
