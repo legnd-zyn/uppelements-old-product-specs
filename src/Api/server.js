@@ -1,4 +1,3 @@
-"use strict";
 import express, { json } from "express";
 import mobiles from "./routes/mobile.js";
 import cors from "cors";
