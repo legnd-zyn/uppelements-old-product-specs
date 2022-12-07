@@ -1,8 +1,8 @@
 import express from "express";
-import centrulDbMobiles from "../../Schema/centrulDbSchema.js";
+import centrulDbMobiles from "../src/Schema/centrulDbSchema.js";
 
 const router = express.Router();
-import connect from "../../connection.js";
+import connect from "../src/connection.js";
 
 connect();
 
