@@ -15,6 +15,7 @@
     "n-filter": "nodemon ./src/centrulDb/filter.js",
     "n-test": "nodemon ./src/test/test.js",
     "dev": "npm run server",
+    "start": "npm run server",
     "build": "npm run server"
   },
   "author": "LEGEND",
