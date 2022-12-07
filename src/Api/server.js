@@ -1,3 +1,4 @@
+"use strict";
 import express, { json } from "express";
 import mobiles from "./routes/mobile.js";
 import cors from "cors";
@@ -27,7 +28,7 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../../dist/index.html"));
 });
 
-const PORT = 8080 || process.env.PORT;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
   console.log(`Running at port ${PORT}`);
