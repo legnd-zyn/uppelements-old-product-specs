@@ -15,17 +15,16 @@ import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 
-// 👇️ "/home/john/Desktop/javascript"
 const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
 app.use("/api/mobiles", mobiles);
 
-app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+app.use(express.static(path.join(__dirname, "../../dist")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
+  res.sendFile(path.join(__dirname, "../../dist/index.html"));
 });
 
 const PORT = 8080 || process.env.PORT;
