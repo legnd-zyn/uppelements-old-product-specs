@@ -14,7 +14,8 @@
     "n-server": "nodemon ./src/api/server.js",
     "n-filter": "nodemon ./src/centrulDb/filter.js",
     "n-test": "nodemon ./src/test/test.js",
-    "dev": "npm run server"
+    "dev": "npm run server",
+    "build": "npm run server"
   },
   "author": "LEGEND",
   "license": "ISC",
