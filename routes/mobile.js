@@ -1,5 +1,6 @@
 import express from "express";
 import centrulDbMobiles from "../src/Schema/centrulDbSchema.js";
+import mobilesCommonInfoModel from "../src/Schema/mobilesCommonInfoSchema.js";
 
 const router = express.Router();
 import connect from "../src/connection.js";
@@ -13,7 +14,6 @@ async function filter(req, res, next) {
   let range = limit < 20 ? limit : 20;
 
   const minprice = req.query.minprice;
-
   const maxprice = req.query.maxprice;
 
   const priceQuery =
@@ -39,12 +39,21 @@ async function filter(req, res, next) {
     .skip(step * req.query.page - 20)
     .limit(range);
 
-  req.body.data = [
+  const count = await centrulDbMobiles.countDocuments(finalObj);
+
+  const cardData = [
     ...arr.reduce((map, obj) => map.set(obj.title, obj), new Map()).values(),
   ].map(({ title, brand, slug, price }) => {
     const obj = { title, brand, slug, price };
     return obj;
   });
+
+  const hasMoreCondition =
+    range && req.query.page ? range * req.query.page : range;
+
+  const hasMore = hasMoreCondition <= count ? true : false;
+
+  req.body.data = { hasMore: hasMore, result: cardData };
   next();
 }
 
@@ -81,9 +90,16 @@ router.get("/lwimg/:slug", getLwImg, async function (req, res) {
   }
 });
 
+router.get("/brands", async (req, res) => {
+  const brands = await mobilesCommonInfoModel.find(
+    { title: "commoninfo" },
+    { brands: 1 }
+  );
+
+  res.status(200).send(brands[0].brands);
+});
 router.get("/:slug", nestedData, (req, res) => {
   res.status(200).send(req.body.data);
 });
-
 export default router;
 // LEGEND

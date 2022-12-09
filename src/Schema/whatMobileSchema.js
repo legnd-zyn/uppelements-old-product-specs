@@ -20,5 +20,4 @@ const WhatMobileSchema = mongoose.Schema({
 });
 
 const WhatMobile = mongoose.model("WhatMobile", WhatMobileSchema);
-WhatMobile.createIndexes();
 export default WhatMobile;

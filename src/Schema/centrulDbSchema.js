@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
+import { centrulConnection } from "../connection.js";
 import dotenv from "dotenv";
 dotenv.config();
-
 const MobileCardSchema = mongoose.Schema({
   title: {
     type: String,
@@ -25,9 +25,6 @@ const MobileCardSchema = mongoose.Schema({
   },
 });
 
-// const centrulConnection = mongoose.createConnection(
-//   `${process.env.DB_HOST}/centruldb`
-// );
-
 const CentrulMobileDB = mongoose.model("CentrulMobileDB", MobileCardSchema);
+// CentrulMobileDB.createIndexes();
 export default CentrulMobileDB;

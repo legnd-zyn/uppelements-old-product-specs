@@ -1,5 +1,6 @@
 import express, { json } from "express";
 import mobiles from "./routes/mobile.js";
+import sidebar from "./routes/sidebar.js";
 import cors from "cors";
 
 const app = express();
@@ -7,6 +8,7 @@ const corsOptions = {
   origin: "*",
   optionsSuccessStatus: 200,
 };
+
 app.use(cors(corsOptions));
 app.use(json());
 import path from "path";
@@ -19,6 +21,7 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
+app.use("/api/sidebar", sidebar);
 app.use("/api/mobiles", mobiles);
 
 app.use(express.static(path.join(__dirname, "./dist")));

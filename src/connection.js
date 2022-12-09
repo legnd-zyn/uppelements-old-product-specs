@@ -14,4 +14,8 @@ const connectToMongo = async () => {
   }
 };
 
+export const centrulConnection = mongoose.createConnection(
+  `${process.env.DB_HOST}/centruldb`
+);
+
 export default connectToMongo;

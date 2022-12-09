@@ -2,6 +2,7 @@ import connection from "../connection.js";
 import PriceOye from "../Schema/PriceOyeSchema.js";
 import WhatMobile from "../Schema/whatMobileSchema.js";
 import CentrulMobileDB from "../Schema/centrulDbSchema.js";
+import mobilesCommonInfoModel from "../Schema/mobilesCommonInfoSchema.js";
 
 connection()
   .then(async () => {
@@ -13,7 +14,7 @@ connection()
 
       if (!exist) {
         const specs = new CentrulMobileDB(obj);
-        specs.save((err, result) => {
+        specs.save((err) => {
           if (err) {
             console.log("Error While Saveing into Central DB", obj.title);
           } else {
@@ -54,7 +55,29 @@ connection()
       .filter(function (item, pos, self) {
         return self.indexOf(item) == pos;
       });
-    console.log(arr);
+
+    const exist = await mobilesCommonInfoModel.exists({ title: "commoninfo" });
+    if (!exist) {
+      const commonInfo = new mobilesCommonInfoModel({ brands: arr });
+      commonInfo.save((err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Brands Saved Sucessfully!");
+        }
+      });
+    } else {
+      mobilesCommonInfoModel
+        .findOneAndUpdate(
+          { title: "commoninfo" },
+          {
+            brands: arr,
+          }
+        )
+        .exec(() => {
+          console.log("Updated");
+        });
+    }
   });
 
 function filterForWhatMobile(mobile) {
