@@ -25,6 +25,12 @@ const MobileCardSchema = mongoose.Schema({
   },
 });
 
-const CentrulMobileDB = mongoose.model("CentrulMobileDB", MobileCardSchema);
+// centrulConnection.db("test").collection("cars").ins;
+
+const CentrulMobileDB = mongoose.model(
+  "CentrulMobileDB",
+  MobileCardSchema,
+  "mobiles"
+);
 // CentrulMobileDB.createIndexes();
 export default CentrulMobileDB;

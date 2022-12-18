@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import { centrulConnection } from "../connection.js";
 
-const mobilesCommonInfoModel = mongoose.model(
-  "mobilesCommonInfo",
+const electronicsCommonInfoModel = centrulConnection.model(
+  "electronicscommoninfo",
   mongoose.Schema({
     title: {
       type: String,
@@ -13,7 +13,7 @@ const mobilesCommonInfoModel = mongoose.model(
       type: Array,
     },
   }),
-  "mobilescommoninfo"
+  "electronicscommoninfo"
 );
 
-export default mobilesCommonInfoModel;
+export default electronicsCommonInfoModel;

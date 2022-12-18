@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { MongoClient } from "mongodb";
 dotenv.config();
 const mongoURI = `${process.env.DB_HOST}/mobilecards`;
 
@@ -14,8 +15,12 @@ const connectToMongo = async () => {
   }
 };
 
-export const centrulConnection = mongoose.createConnection(
-  `${process.env.DB_HOST}/centruldb`
-);
+// export const centrulConnection = mongoose.createConnection(
+//   `${process.env.DB_HOST}/centruldb`
+// );
+
+export const centrulConnection = await mongoose
+  .createConnection(`${process.env.DB_HOST}`)
+  .asPromise();
 
 export default connectToMongo;

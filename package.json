@@ -5,12 +5,14 @@
   "description": "PriceOye Mobiles",
   "main": "./src/Api/server.js",
   "scripts": {
-    "priceoye": "nodemon ./src/priceoye/PriceoyeCards.js",
-    "whatmobile": "nodemon ./src/whatmobile/whatmobile.js",
+    "priceoye": "nodemon ./src/Mobiles/priceoye/PriceoyeCards.js",
+    "whatmobile": "nodemon ./src/Mobiles/whatmobile/whatmobile.js",
+    "pkelectronics": "nodemon ./src/Electronics/pkelectronics.js",
     "server": "node ./server.js",
     "filter": "nodemon ./src/centrulDb/filter.js",
-    "n-priceoye": "nodemon ./src/priceoye/PriceoyeCards.js",
-    "n-whatmobile": "nodemon ./src/whatmobile/whatmobile.js",
+    "n-priceoye": "nodemon ./src/Mobiles/priceoye/PriceoyeCards.js",
+    "n-whatmobile": "nodemon ./src/Mobiles/whatmobile/whatmobile.js",
+    "n-pkelectronics": "nodemon ./src/Electronics/pkelectronics.js",
     "n-server": "nodemon ./server.js",
     "n-filter": "nodemon ./src/centrulDb/filter.js",
     "n-test": "nodemon ./src/test/test.js",
@@ -28,7 +30,7 @@
     "image-to-base64": "^2.2.0",
     "jsdom": "^20.0.1",
     "mongodb": "^4.12.1",
-    "mongoose": "^6.7.0",
+    "mongoose": "^6.8.0",
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {

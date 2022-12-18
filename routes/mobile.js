@@ -1,20 +1,20 @@
 import express from "express";
-import centrulDbMobiles from "../src/Schema/centrulDbSchema.js";
+import connection from "../src/Schema/centrulDbSchema.js";
 import mobilesCommonInfoModel from "../src/Schema/mobilesCommonInfoSchema.js";
 
 const router = express.Router();
-import connect from "../src/connection.js";
+import { centrulConnection } from "../src/connection.js";
 
-connect();
+// connect();
 
 // MiddleWare
 async function filter(req, res, next) {
   let step = 20;
-  const limit = req.query.limit;
+  const limit = parseInt(req.query.limit);
   let range = limit < 20 ? limit : 20;
 
-  const minprice = req.query.minprice;
-  const maxprice = req.query.maxprice;
+  const minprice = parseInt(req.query.minprice);
+  const maxprice = parseInt(req.query.maxprice);
 
   const priceQuery =
     minprice && maxprice
@@ -34,12 +34,15 @@ async function filter(req, res, next) {
 
   const finalObj = { ...brandQuery, ...priceQuery };
 
-  const arr = await centrulDbMobiles
+  const connection = centrulConnection.db.collection(req.body.slug);
+
+  const arr = await connection
     .find(finalObj)
     .skip(step * req.query.page - 20)
-    .limit(range);
+    .limit(range)
+    .toArray();
 
-  const count = await centrulDbMobiles.countDocuments(finalObj);
+  const count = await connection.countDocuments(finalObj);
 
   const cardData = [
     ...arr.reduce((map, obj) => map.set(obj.title, obj), new Map()).values(),
@@ -58,17 +61,44 @@ async function filter(req, res, next) {
 }
 
 const nestedData = async (req, res, next) => {
-  const nestedData = await centrulDbMobiles.find({ slug: req.params.slug });
+  const connection = centrulConnection.db.collection(req.body.slug);
+  const nestedData = await connection.find({ slug: req.params.slug }).toArray();
 
-  const { title, price, brand, slug, detailedSpecs } = nestedData[0];
+  const {
+    title,
+    price,
+    brand,
+    slug,
+    detailedSpecs,
+    mileage,
+    location,
+    description,
+    features,
+  } = nestedData[0];
 
-  req.body.data = { title, price, brand, slug, detailedSpecs };
+  const finalObj = { title, price, brand, slug, detailedSpecs };
+
+  if (mileage) {
+    finalObj.mileage = mileage;
+  }
+  if (location) {
+    finalObj.location = location;
+  }
+  if (description) {
+    finalObj.description = description;
+  }
+  if (features) {
+    finalObj.features = features;
+  }
+
+  req.body.data = finalObj;
   next();
 };
 
 async function getLwImg(req, res, next) {
+  const connection = centrulConnection.db.collection(req.body.slug);
   if (req.params.slug) {
-    const imgStr = await centrulDbMobiles.find({ slug: req.params.slug });
+    const imgStr = await connection.find({ slug: req.params.slug }).toArray();
 
     req.body.img = imgStr[0].icon;
   }
@@ -91,15 +121,23 @@ router.get("/lwimg/:slug", getLwImg, async function (req, res) {
 });
 
 router.get("/brands", async (req, res) => {
-  const brands = await mobilesCommonInfoModel.find(
-    { title: "commoninfo" },
-    { brands: 1 }
+  const connection = centrulConnection.db.collection(
+    `${req.body.slug}commoninfo`
+  );
+  let brandsCollection = (
+    await connection.find({ title: "commoninfo" }, { brands: 1 }).toArray()
+  )[0].brands;
+
+  brandsCollection.push(
+    brandsCollection.splice(brandsCollection.indexOf("unknown"), 1)[0]
   );
 
-  res.status(200).send(brands[0].brands);
+  res.status(200).send(brandsCollection);
 });
+
 router.get("/:slug", nestedData, (req, res) => {
   res.status(200).send(req.body.data);
 });
 export default router;
+
 // LEGEND

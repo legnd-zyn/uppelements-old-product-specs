@@ -1,8 +1,7 @@
 import express from "express";
-import mobilesCommonInfoModel from "../src/Schema/mobilesCommonInfoSchema.js";
 
 const router = express.Router();
-import connect from "../src/connection.js";
+import connect, { centrulConnection } from "../src/connection.js";
 
 connect();
 
@@ -11,23 +10,63 @@ function capitalize(str) {
 }
 
 const filter = async (req, res, next) => {
-  const brandsObj = await mobilesCommonInfoModel.find({ title: "commoninfo" });
-  console.log(brandsObj[0].brands);
-  const obj = [
-    {
-      title: "Mobiles",
-      linkTo: "/mobiles",
+  const collections = (await centrulConnection.db.listCollections().toArray())
+    .map((collection) => collection.name)
+    .filter((collection) => !collection.includes("commoninfo"));
+
+  const FinalArr = [];
+
+  for (const collection of collections) {
+    const db = centrulConnection.db.collection(`${collection}commoninfo`);
+
+    const obj = {
+      title: `${collection.charAt(0).toUpperCase()}${collection.slice(1)}`,
+      linkTo: `/${collection}`,
+      type: collection,
       dropdown: [
-        ...brandsObj[0].brands.map((data) => {
+        ...(await db.find().toArray())[0].brands.map((data) => {
           return {
             title: capitalize(data),
-            type: "mobiles",
+            type: collection,
           };
         }),
       ],
-    },
-  ];
-  req.body.data = obj;
+    };
+
+    FinalArr.push(obj);
+  }
+
+  // console.log(FinalArr);
+
+  // const mobiles = {
+  //   title: "Mobiles",
+  //   linkTo: "/mobiles",
+  //   type: "mobiles",
+  //   dropdown: [
+  //     ...mobileBrandsArr[0].brands.map((data) => {
+  //       return {
+  //         title: capitalize(data),
+  //         type: "mobiles",
+  //       };
+  //     }),
+  //   ],
+  // };
+  // const electronics = {
+  //   title: "Electronics",
+  //   linkTo: "/electronics",
+  //   type: "electronics",
+  //   dropdown: [
+  //     ...electronicsBrandsArr[0].brands.map((data) => {
+  //       return {
+  //         title: capitalize(data),
+  //         type: "electronics",
+  //       };
+  //     }),
+  //   ],
+  // };
+
+  // const obj = [mobiles, electronics];
+  req.body.data = FinalArr;
 
   next();
 };
